@@ -1,0 +1,25 @@
+{
+    "name": "mpopowicz/laravel-swagger-test",
+    "description": "A wrapper of l5-swagger to easilly compare api results and swagger documentation",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mikaël Popowicz",
+            "email": "mikael.popowicz@gmail.com"
+        }
+    ],
+    "require": {
+        "darkaonline/l5-swagger": "5.7.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "1.*",
+        "orchestra/testbench": "3.6.*",
+        "phpunit/phpunit": "7.*"
+    },
+    "autoload": {
+        "MP\\LaravelSwaggerTest\\": "src"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
