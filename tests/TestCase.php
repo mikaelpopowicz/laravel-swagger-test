@@ -19,19 +19,21 @@ abstract class TestCase extends OrchestraTestCase
         return version_compare(config('l5-swagger.swagger_version'), '3.0', '>=');
     }
 
-    protected function setAnnotationsPath()
+    protected function setAnnotationsPath(string $path = null)
     {
         $cfg = config('l5-swagger');
-        $cfg['paths']['annotations'] = __DIR__.'/storage/annotations/Swagger';
 
-        if ($this->isOpenApi()) {
-            $cfg['paths']['annotations'] = __DIR__.'/storage/annotations/OpenApi';
+        if (! empty($path)) {
+            $cfg['paths']['annotations'] = $path;
+        } else {
+            $cfg['paths']['annotations'] = $this->isOpenApi()
+                ? __DIR__.'/storage/annotations/OpenApi'
+                : __DIR__.'/storage/annotations/Swagger';
         }
 
         $cfg['generate_always'] = true;
         $cfg['generate_yaml_copy'] = true;
 
-        //Adding constants which will be replaced in generated json file
         $cfg['constants']['L5_SWAGGER_CONST_HOST'] = 'http://my-default-host.com';
 
         config(['l5-swagger' => $cfg]);

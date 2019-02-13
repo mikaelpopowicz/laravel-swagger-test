@@ -34,4 +34,6 @@ interface SwaggerParser
      * @return \OpenApi\Annotations\Operation
      */
     public function getOperation(string $path, string $method): Operation;
+
+    public function getResponse(string $path, string $method, int $code);
 }

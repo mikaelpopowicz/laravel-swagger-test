@@ -70,6 +70,12 @@
  */
 
 /**
+ * @OA\Schema(
+ *
+ * )
+ */
+
+/**
  * @OA\Get(
  *      path="/projects",
  *      operationId="getProjectsList",

@@ -2,10 +2,18 @@
 
 namespace Mp\LaravelSwaggerTest;
 
+use BadMethodCallException;
 use L5Swagger\Generator as BaseGenerator;
 use Mp\LaravelSwaggerTest\Parsers\OpenApiParser;
-use OpenApi\Annotations\PathItem;
+use ReflectionException;
+use ReflectionMethod;
 
+/**
+ * Class Generator
+ *
+ * @package Mp\LaravelSwaggerTest
+ * @method array getResponseStructure(string $path, string $method, int $code, string $mediaType = 'application/json')
+ */
 class Generator extends BaseGenerator
 {
     /**
@@ -27,6 +35,25 @@ class Generator extends BaseGenerator
             ->setParser();
     }
 
+    public function __call($method, $arguments)
+    {
+        if (!method_exists($this->parser, $method)) {
+            throw new BadMethodCallException("{$method} is undefined");
+        }
+
+        try {
+            $ref = new ReflectionMethod($this->parser, $method);
+            if (!$ref->isPublic()) {
+                $visibility = $ref->isPrivate() ? 'private' : 'protected';
+                throw new BadMethodCallException("Fatal error : call to {$visibility} {$method}");
+            }
+
+            return $this->parser->{$method}(...$arguments);
+        } catch (ReflectionException $reflectionException) {
+            throw new BadMethodCallException("{$method} is undefined", $reflectionException->getCode(), $reflectionException);
+        }
+    }
+
     /**
      * Set inner parser instance.
      *
@@ -39,10 +66,5 @@ class Generator extends BaseGenerator
             : null;
 
         return $this;
-    }
-
-    public function getPath(string $path): PathItem
-    {
-        return $this->parser->getPath($path);
     }
 }

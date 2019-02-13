@@ -7,13 +7,34 @@ use Mp\LaravelSwaggerTest\Generator;
 class GeneratorTest extends TestCase
 {
     /** @test */
-    public function can_get_path()
+    public function can_deduce_pet_structure()
     {
-        $this->setAnnotationsPath();
+        $structure = [
+            [
+                'id',
+                'category' => [
+                    'id',
+                    'name',
+                ],
+                'name',
+                'photoUrls',
+                'tags' => [
+                    [
+                        'id',
+                        'name',
+                    ]
+                ]
+            ]
+        ];
 
+        $this->setAnnotationsPath(__DIR__ . '/../vendor/zircote/swagger-php/Examples/petstore-3.0');
         $generator = Generator::make();
 
-        $path = $generator->getPath('/projects');
-        dd($path);
+        $responseStructure = $generator->getResponseStructure('/pet/findByTags', 'get', 200);
+
+        $this->assertThat(
+            $responseStructure,
+            $this->equalTo($structure)
+        );
     }
 }
