@@ -18,7 +18,14 @@
         "phpunit/phpunit": "7.*"
     },
     "autoload": {
-        "MP\\LaravelSwaggerTest\\": "src"
+        "psr-4": {
+            "Mp\\LaravelSwaggerTest\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
